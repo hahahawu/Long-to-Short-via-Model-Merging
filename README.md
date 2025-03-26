@@ -19,4 +19,6 @@
 - The merging of large-scale models (14B and 32B) poses significant challenges in simultaneously maintaining reasoning performance while substantially reducing response length.
 
 
-More results and code will be released soon. Stay tuned!
+More results and code will be released soon. Paper is on the Arxiv road.
+
+Stay tuned!
