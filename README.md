@@ -15,3 +15,6 @@
 - Model merging methods applied to 1.5B-scale models remain effective on simple tasks. Smaller models struggle to learn long CoT reasoning ability through model merging. 
   
 - The merging of large-scale models (14B and 32B) poses significant challenges in simultaneously maintaining reasoning performance while substantially reducing response length.
+
+
+More results and code will be released soon. Stay tuned!
