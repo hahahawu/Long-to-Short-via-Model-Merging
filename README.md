@@ -1,5 +1,7 @@
 # Unlocking Efficient Long-to-Short LLM Reasoning with Model Merging
 
+[[PDF]](resource/MM4Long2Short.pdf)
+
 ![overall figures](resource/fig1.png)
 
 ## Summary of our findings:
