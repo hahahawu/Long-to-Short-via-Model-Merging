@@ -1,8 +1,13 @@
 # Unlocking Efficient Long-to-Short LLM Reasoning with Model Merging
 
-[[PDF]](resource/MM4Long2Short.pdf)
+[[ArXiv]](http://arxiv.org/abs/2503.20641) | [[Latest PDF]](resource/MM4Long2Short.pdf)
 
 ![overall figures](resource/fig1.png)
+
+## News 🔔 🔔 🔔 
+
+- 💡 [27 March, 2025] We release the code of Average Merging, Task Arithmetic, Ties-Merging and DARE. Special thanks to [MergeLM](https://github.com/yule-BUAA/MergeLM) for their great work. We use this repo as our codebase.
+- 📣 [26 March, 2025] Our work is available on [[ArXiv]](http://arxiv.org/abs/2503.20641). 
 
 ## Summary of our findings:
 
@@ -18,7 +23,103 @@
   
 - The merging of large-scale models (14B and 32B) poses significant challenges in simultaneously maintaining reasoning performance while substantially reducing response length.
 
+## Environments
+For merging methods:
+```angular2html
+numpy==1.26.4
+torch==2.5.1
+transformers==4.48.2
+```
 
-More results and code will be released soon. Paper is on the Arxiv road.
+For the evaluation, we recommend following the usage of [[Qwen2.5-Math Eval Toolkit]](https://github.com/QwenLM/Qwen2.5-Math).
 
-Stay tuned!
+## Implementation
+
+Our implementation is adapted from [MergeLM](https://github.com/yule-BUAA/MergeLM). We optimize the code of some merging methods, such as TA and Ties-Merging, for computational efficiency.
+
+### Average merging
+
+```shell
+python src/main_merging.py --merge_method average_merging \
+                           --output_dir DIR \
+                           --base_model MODEL_PATH \
+                           --models_to_merge MODEL_PATH1,MODEL_PATH2,...,MODEL_PATHn
+```
+
+### Task Arithmetic
+```shell
+python src/main_merging.py --merge_method task_arithmetic \
+                           --output_dir DIR \
+                           --base_model MODEL_PATH \
+                           --models_to_merge MODEL_PATH1,MODEL_PATH2,...,MODEL_PATHn \
+                           --scaling_coefficient α
+```
+
+### Ties-Merging
+```shell
+python src/main_merging.py --merge_method ties_merging/ties_merging_dare \
+                           --output_dir DIR \
+                           --base_model MODEL_PATH \
+                           --models_to_merge MODEL_PATH1,MODEL_PATH2,...,MODEL_PATHn \
+                           --scaling_coefficient α \
+                           --param_value_mask_rate k
+```
+
+Note: You can choose to use `ties_merging` that we optimize the implementation for better computational efficiency or `ties_merging_dare` which is the original implementation in MergeLM. We have compared two implementations and find the results are comparable.
+
+### DARE
+```shell
+python src/main_merging.py --merge_method mask_merging \
+                           --output_dir DIR \
+                           --base_model MODEL_PATH \
+                           --models_to_merge MODEL_PATH1,MODEL_PATH2,...,MODEL_PATHn \
+                           --scaling_coefficient α \
+                           --param_value_mask_rate k \
+                           --mask_apply_method [average_merging || task_arithmetic || ties_merging || ties_merging_dare] \
+                           --weight_mask_rates p
+```
+
+### AIM & Sens-Merging
+We will release the code of activation-based methods soon. Stay tuned!
+
+### Evaluations
+
+```shell
+git clone https://github.com/QwenLM/Qwen2.5-Math.git
+cd Qwen2.5-Math-main/evaluation
+```
+
+Move `src/evaluation/data_process.py` and `src/evaluation/l2s_eval.sh` as following:
+
+```markdown
+Qwen2.5-Math-Main/evaluation
+├── sh
+│   ├── l2s_eval.sh
+├── data
+│   ├── math500
+├── outputs
+│   ├── ...
+├── data_process.py
+└── ...
+```
+
+Note: [MATH500](https://huggingface.co/datasets/HuggingFaceH4/MATH-500) are not in original database. You should manually add it to `Qwen2.5-Math-Main/evaluation/data`.
+
+Run the evaluation:
+```shell
+CUDA_VISIBLE_DEVICES="0,1,2,3" bash sh/l2s_eval.sh [PROMPT_TYPE:qwen25-math-cot] [MODEL_PATH] [MAX_TOKEN:10240] [NUM_SHOTS:0] [DATASETS:aime24,math500,gsm8k,college_math,minerva_math,olympiadbench]
+```
+
+To make sure the reproducibility of the results, we set `temperature=0`, `top_p=1`.
+
+## Configurations
+
+| Method           | 1.5B           | 7B                 | 14B                | 32B                |
+|------------------|----------------|--------------------|--------------------|--------------------|
+| Task Arithmetic  | α = 0.7        | α = 0.7           | α = 0.7           | α = 0.7           |
+| Ties-Merging     | k = 0.8, α = 1.0 | k = 0.8, α = 1.0   | k = 0.2, α = 0.5   | k = 0.25, α = 0.55 |
+| DARE             | p = 0.3        | p = 0.3           | p = 0.4           | -                  |
+| AIM-Ties         | ω = 0.4        | ω = 0.4           | ω = 0.4           | -                  |
+| Sens-Merging     | α = 0.4, T = 3.0 | α = 0.7, T = 2.0  | α = 0.8, T = 6.0  | -                  |
+
+*Table: The hyper-parameters of various merging methods. α means the coefficient in TA merging. p means the drop rate in DARE. k denotes the trim ratio in Ties-Merging. ω means the balance factor in AIM. T is the temperature in Sens-Merging.*
