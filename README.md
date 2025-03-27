@@ -9,7 +9,7 @@
 - 💡 [27 March, 2025] We release the code of Average Merging, Task Arithmetic, Ties-Merging and DARE. Special thanks to [MergeLM](https://github.com/yule-BUAA/MergeLM) for their great work. We use this repo as our codebase.
 - 📣 [26 March, 2025] Our work is available on [[ArXiv]](http://arxiv.org/abs/2503.20641). 
 
-## Summary of our findings:
+## Summary of our findings 🔥🔥🔥:
 
 - Model merging is a highly efficient approach for long-to-short reasoning, as it directly operates on model parameters **without requiring additional training**.
 
@@ -22,6 +22,24 @@
 - Model merging methods applied to 1.5B-scale models remain effective on simple tasks. Smaller models struggle to learn long CoT reasoning ability through model merging. 
   
 - The merging of large-scale models (14B and 32B) poses significant challenges in simultaneously maintaining reasoning performance while substantially reducing response length.
+
+## Related Work 📑
+
+- Average Merging: [Model soups: averaging weights of multiple fine-tuned models improves accuracy without increasing inference time](https://arxiv.org/abs/2203.05482)
+  
+- Task Arithmetic: [Editing Models with Task Arithmetic](https://arxiv.org/abs/2212.04089)
+
+- Ties-Merging: [TIES-Merging: Resolving Interference When Merging Models](https://arxiv.org/abs/2306.01708)
+
+- DARE: [Language Models are Super Mario: Absorbing Abilities from Homologous Models as a Free Lunch](https://arxiv.org/abs/2311.03099)
+
+- LoRE-Merging: [LoRE-Merging: Exploring Low-Rank Estimation For Large Language Model Merging](https://arxiv.org/abs/2502.10749)
+
+- Twin-Merging: [Twin-Merging: Dynamic Integration of Modular Expertise in Model Merging](https://arxiv.org/abs/2406.15479)
+
+- AIM: [Activation-Informed Merging of Large Language Models](https://arxiv.org/abs/2502.02421)
+
+- Sens-Merging: [Sens-Merging: Sensitivity-Guided Parameter Balancing for Merging Large Language Models](https://arxiv.org/abs/2502.12420)
 
 ## Environments
 For merging methods:
@@ -123,3 +141,17 @@ To make sure the reproducibility of the results, we set `temperature=0`, `top_p=
 | Sens-Merging     | α = 0.4, T = 3.0 | α = 0.7, T = 2.0  | α = 0.8, T = 6.0  | -                  |
 
 *Table: The hyper-parameters of various merging methods. α means the coefficient in TA merging. p means the drop rate in DARE. k denotes the trim ratio in Ties-Merging. ω means the balance factor in AIM. T is the temperature in Sens-Merging.*
+
+
+## Citation
+```
+@misc{wu2025unlockingefficientlongtoshortllm,
+      title={Unlocking Efficient Long-to-Short LLM Reasoning with Model Merging}, 
+      author={Han Wu and Yuxuan Yao and Shuqi Liu and Zehua Liu and Xiaojin Fu and Xiongwei Han and Xing Li and Hui-Ling Zhen and Tao Zhong and Mingxuan Yuan},
+      year={2025},
+      eprint={2503.20641},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2503.20641}, 
+}
+```
