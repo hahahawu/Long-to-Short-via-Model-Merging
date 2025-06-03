@@ -145,7 +145,7 @@ To make sure the reproducibility of the results, we set `temperature=0`, `top_p=
 
 ## Citation
 ```
-@misc{wu2025unlockingefficientlongtoshortllm,
+@article{wu2025unlockingefficientlongtoshortllm,
       title={Unlocking Efficient Long-to-Short LLM Reasoning with Model Merging}, 
       author={Han Wu and Yuxuan Yao and Shuqi Liu and Zehua Liu and Xiaojin Fu and Xiongwei Han and Xing Li and Hui-Ling Zhen and Tao Zhong and Mingxuan Yuan},
       year={2025},
