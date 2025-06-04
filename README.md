@@ -10,7 +10,22 @@
 > [!IMPORTANT]
 > **Reducing around 50% length with performance improvement 4 points on AIME24! AND preserving the no_think ability!**
 - 💡 [27 March, 2025] We release the code of Average Merging, Task Arithmetic, Ties-Merging and DARE. Special thanks to [MergeLM](https://github.com/yule-BUAA/MergeLM) for their great work. We use this repo as our codebase.
-- 📣 [26 March, 2025] Our work is available on [[ArXiv]](http://arxiv.org/abs/2503.20641). 
+- 📣 [26 March, 2025] Our work is available on [[ArXiv]](http://arxiv.org/abs/2503.20641).
+
+## 🔥 Early Test on DeepSeek-R1-0528-Qwen3-8B
+
+We directly merge the R1-Qwen3-8B with the Qwen3-8B (as base) models using TIES-Merging with `k = 0.7, α = 0.7`. We sample 16 answers for each question and calculate the the average score (`generation_parameters: max_new_tokens = 32768, temperature = 0.6, top_p = 0.95, top_k = 20}`).
+
+| Model           | R1-0528-Qwen3-8B          | Merged Qwen3-8B                 | 
+|------------------|----------------|--------------------|
+| AIME24  | 70.63 (11328.25)        | 74.58 (6448.5)           |
+
+According to [Qwen3's guidelines](https://huggingface.co/Qwen/Qwen3-8B), there are two ways to achieve the switch between the /think and /no_think modes, i.e. `enable_thinking=False|True` and appending `/think | /no_think` to the instruction.
+
+- Extensive experiments on R1-Qwen3-8B reveal that the no_think capability has been completely diminished in both modes, resulting in excessively lengthy responses.
+- Our merged model perserves the no_think ability according to our testing. We found that the model can directly generate the answer part by setting `enable_thinking=False`. However, the alternative switch mode triggered by the `/no_think` keyword appears to fail in most cases.
+
+*Stay tuned to our more new results!*
 
 ## Summary of our findings 🔥🔥🔥:
 
@@ -43,21 +58,6 @@
 - AIM: [Activation-Informed Merging of Large Language Models](https://arxiv.org/abs/2502.02421)
 
 - Sens-Merging: [Sens-Merging: Sensitivity-Guided Parameter Balancing for Merging Large Language Models](https://arxiv.org/abs/2502.12420)
-
-## 🔔 Early Test on DeepSeek-R1-0528-Qwen3-8B
-
-We directly merge the R1-Qwen3-8B with the Qwen3-8B (as base) models using TIES-Merging with `k = 0.7, α = 0.7`. We sample 16 answers for each question and calculate the the average score (`generation_parameters: max_new_tokens = 32768, temperature = 0.6, top_p = 0.95, top_k = 20}`).
-
-| Model           | R1-0528-Qwen3-8B          | Merged Qwen3-8B                 | 
-|------------------|----------------|--------------------|
-| AIME24  | 70.63 (11328.25)        | 74.58 (6448.5)           |
-
-According to [Qwen3's guidelines](https://huggingface.co/Qwen/Qwen3-8B), there are two ways to achieve the switch between the /think and /no_think modes, i.e. `enable_thinking=False|True` and appending `/think | /no_think` to the instruction.
-
-- Extensive experiments on R1-Qwen3-8B reveal that the no_think capability has been completely diminished in both modes, resulting in excessively lengthy responses.
-- Our merged model perserves the no_think ability according to our testing. We found that the model can directly generate the answer part by setting `enable_thinking=False`. However, the alternative switch mode triggered by the `/no_think` keyword appears to fail in most cases.
-
-*Stay tuned to our more new results!*
 
 ## Environments
 For merging methods:
